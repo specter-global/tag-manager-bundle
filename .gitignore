@@ -1,0 +1,10 @@
+/bin/
+/build/
+/vendor/
+/composer.lock
+/symfony.lock
+/.env
+/.env.test
+/.env.local
+/.env.*.local
+/.phpunit.result.cache

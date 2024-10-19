@@ -1,0 +1,23 @@
+{%- if config.is_enabled %}
+    {%- autoescape false %}
+        <script async src="{{ url }}"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('set', 'linker', {
+            accept_incoming: {{ config.linker.accept_incoming ? 'true' : 'false' }},
+            decorate_forms: {{ config.linker.decorate_forms ? 'true' : 'false' }},
+            url_position: '{{ config.linker.url_position }}',
+            {%~ if config.linker.domains %}
+            domains: ['{{ config.linker.domains|join("','") }}'],
+            {% endif ~%}
+          });
+          {%~ if config.cookie_flags %}
+          gtag('config', '{{ config.tag_id }}', {
+            cookie_flags: '{{ config.cookie_flags|join(";") }}',
+          });
+          {% endif ~%}
+        </script>
+    {% endautoescape -%}
+{% endif -%}

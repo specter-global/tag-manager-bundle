@@ -1,0 +1,23 @@
+specter_global_tag_manager:
+    enabled: true
+    tag_id: 'DUMMY_TAG_MANAGER_ID'
+    cookie_flags:
+        - 'Flag=Value'
+    linker:
+        accept_incoming: false
+        decorate_forms: false
+        url_position: query
+        domains:
+            - 'example.org'
+
+when@dev:
+    specter_global_tag_manager:
+        enabled: false
+
+when@test:
+    specter_global_tag_manager:
+        enabled: false
+
+when@prod:
+    specter_global_tag_manager:
+        enabled: true

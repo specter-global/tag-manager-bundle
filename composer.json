@@ -1,0 +1,139 @@
+{
+    "name": "specter-global/tag-manager-bundle",
+    "description": "TagManagerBundle: A Simplified Integration for Cross-Domain Measurement.",
+    "license": "MIT",
+    "type": "symfony-bundle",
+    "keywords": [
+        "Tag Manager",
+        "Cross-Domain Measurement"
+    ],
+    "readme": "README.md",
+    "authors": [
+        {
+            "name": "Andrii Sobol",
+            "email": "andrii.sobol@specter.global",
+            "homepage": "https://specter.global",
+            "role": "Software Engineer"
+        },
+        {
+            "name": "Support Team",
+            "email": "support@specter.global",
+            "homepage": "https://specter.global/support",
+            "role": "Support Team"
+        }
+    ],
+    "homepage": "https://developer.specter.global/docs/tag-manager-bundle",
+    "support": {
+        "source": "https://github.com/specter-global/tag-manager-bundle",
+        "docs": "https://developer.specter.global/docs/tag-manager-bundle",
+        "security": "https://github.com/specter-global/tag-manager-bundle/security/policy"
+    },
+    "require": {
+        "php": "^8.2",
+        "symfony/dependency-injection": "^6.4 || ^7.0",
+        "symfony/flex": "^2.0",
+        "symfony/twig-bundle": "^6.4 || ^7.0",
+        "twig/extra-bundle": "^2.0 || ^3.0",
+        "twig/twig": "^2.0 || ^3.0"
+    },
+    "require-dev": {
+        "ergebnis/composer-normalize": "^2.0",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "php-parallel-lint/php-parallel-lint": "^1.0",
+        "phpstan/phpstan": "^1.0",
+        "phpunit/phpunit": "^10.0 || ^11.0",
+        "squizlabs/php_codesniffer": "^3.0",
+        "symfony/dotenv": "^7.0"
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "SpecterGlobal\\Bundle\\TagManagerBundle\\": "./src/TagManagerBundle/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SpecterGlobal\\Bundle\\TagManagerBundle\\Tests\\Unit\\": "./tests/TagManagerBundle/Unit/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "symfony/flex": true
+        },
+        "audit": {
+            "abandoned": "ignore"
+        },
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
+        },
+        "process-timeout": 0,
+        "sort-packages": true
+    },
+    "extra": {
+        "composer-normalize": {
+            "indent-size": 4,
+            "indent-style": "space"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "composer audit"
+        ],
+        "post-update-cmd": [
+            "composer audit"
+        ],
+        "auto-scripts": {},
+        "dev:analyze": [
+            "@dev:analyze:phpstan"
+        ],
+        "dev:analyze:phpstan": [
+            "./vendor/bin/phpstan analyse --no-progress --memory-limit=1G --configuration=phpstan.dist.neon"
+        ],
+        "dev:audit": [
+            "composer audit"
+        ],
+        "dev:build:boot": "mkdir -p ./build/cache && mkdir -p ./build/coverage",
+        "dev:build:clean": "rm -rf ./build/cache/*.* && rm -rf ./build/coverage/*.*",
+        "dev:syntax": [
+            "@dev:syntax:lint",
+            "@dev:syntax:phpcs"
+        ],
+        "dev:syntax:composer-normalize": "composer normalize",
+        "dev:syntax:fix": "./vendor/bin/phpcbf -d memory-limit=1G",
+        "dev:syntax:lint": "./vendor/bin/parallel-lint ./src ./tests",
+        "dev:syntax:phpcs": "./vendor/bin/phpcs -d memory-limit=1G",
+        "dev:test": [
+            "@dev:audit",
+            "@dev:analyze",
+            "@dev:syntax",
+            "@dev:test:unit"
+        ],
+        "dev:test:unit": "./vendor/bin/phpunit ./tests --colors=always",
+        "dev:test:unit:coverage:html": "./vendor/bin/phpunit ./tests --colors=always --coverage-html ./build/coverage/coverage-html/",
+        "dev:test:unit:coverage:text": "./vendor/bin/phpunit ./tests --colors=always --coverage-text --coverage-clover ./build/coverage/clover.xml --coverage-cobertura ./build/coverage/cobertura.xml --coverage-crap4j ./build/coverage/crap4j.xml --coverage-xml ./build/coverage/coverage-xml --log-junit ./build/coverage/junit.xml",
+        "dev:test:unit:suite-default": "./vendor/bin/phpunit ./tests --testsuite=default --colors=always"
+    },
+    "scripts-descriptions": {
+        "dev:analyze": "Runs all static analysis checks.",
+        "dev:analyze:phpstan": "Runs the PHPStan static analyzer.",
+        "dev:audit": "Scans the list of installed packages for any reported security vulnerabilities.",
+        "dev:build:boot": "Boot the build and cache directories.",
+        "dev:build:clean": "Cleans the build and cache directories.",
+        "dev:syntax": "Runs all syntax analysis checks.",
+        "dev:syntax:composer-normalize": "Runs Composer normalize to to normalize composer.json in the working directory.",
+        "dev:syntax:fix": "Runs PHP Coding Standards Fixer to check issues of pre-defined coding standards and fix them if possible.",
+        "dev:syntax:lint": "Runs PHP Lint to check and detect syntax errors.",
+        "dev:syntax:phpcs": "Runs PHP Coding Standards Fixer to check and detect violations of pre-defined coding standards.",
+        "dev:test": "Runs all tests.",
+        "dev:test:unit": "Runs PHPUnit tests.",
+        "dev:test:unit:coverage:html": "Runs PHPUnit tests and generates Html coverage report.",
+        "dev:test:unit:coverage:text": "Runs PHPUnit tests and generates Text coverage reports.",
+        "dev:test:unit:suite-default": "Runs PHPUnit tests, default suite."
+    }
+}

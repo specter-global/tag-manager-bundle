@@ -1,0 +1,71 @@
+name: "Continuous Integration"
+
+on:
+    push:
+        branches:
+            - "master"
+    pull_request:
+        branches:
+            - "*"
+
+permissions:
+    contents: read
+
+jobs:
+    tests:
+        runs-on: ${{ matrix.operating-system }}
+
+        strategy:
+            matrix:
+                operating-system:
+                    - "ubuntu-latest"
+                php-version:
+                    - "8.2"
+                    - "8.3"
+                dependency:
+                    - "highest"
+
+        name: "PHP version ${{ matrix.php-version }} with ${{ matrix.dependency }} dependencies tests on ${{ matrix.operating-system }}"
+
+        steps:
+            -   name: "Setup PHP version ${{ matrix.php-version }} with ${{ matrix.dependency }} dependencies on ${{ matrix.operating-system }}"
+                uses: "shivammathur/setup-php@v2"
+                with:
+                    php-version: ${{ matrix.php-version }}
+                    coverage: xdebug
+
+            -   name: "Check PHP version"
+                run: "php -v"
+
+            -   name: "Checkout repository"
+                uses: "actions/checkout@v4"
+
+            -   name: "Validate composer.json"
+                run: "composer validate --strict --no-check-version --with-dependencies"
+
+            -   name: "Install dependencies"
+                run: "composer install --optimize-autoloader --prefer-dist --no-progress --no-interaction"
+
+            -   name: "Cache Composer packages"
+                id: composer-cache
+                uses: actions/cache@v4
+                with:
+                    path: vendor
+                    key: ${{ runner.os }}-php-${{ matrix.php-version }}-${{ matrix.dependency }}-${{ hashFiles('**/composer.json') }}
+                    restore-keys: |
+                        ${{ runner.os }}-php-${{ matrix.php-version }}-${{ matrix.dependency }}-${{ hashFiles('**/composer.json') }}
+
+            -   name: "Boot the build and cache directories"
+                run: "composer dev:build:boot"
+
+            -   name: "Run all static analysis checks"
+                run: "composer dev:analyze"
+
+            -   name: "Run all syntax analysis checks"
+                run: "composer dev:syntax"
+
+            -   name: "Run PHPUnit tests"
+                run: "composer dev:test:unit"
+
+            -   name: "Cleans the build and cache directories"
+                run: "composer dev:build:clean"

@@ -1,0 +1,30 @@
+services:
+    _defaults:
+        public: false
+        autowire: true
+        autoconfigure: true
+
+    SpecterGlobal\Bundle\TagManagerBundle\Config\Config:
+        arguments:
+            - '%specter_global_tag_manager.enabled%'
+            - '%specter_global_tag_manager.tag_id%'
+            - '%specter_global_tag_manager.cookie_flags%'
+            - '@SpecterGlobal\Bundle\TagManagerBundle\Config\Linker'
+
+    SpecterGlobal\Bundle\TagManagerBundle\Config\Linker:
+        arguments:
+            - '%specter_global_tag_manager.linker.accept_incoming%'
+            - '%specter_global_tag_manager.linker.decorate_forms%'
+            - '%specter_global_tag_manager.linker.url_position%'
+            - '%specter_global_tag_manager.linker.domains%'
+
+    SpecterGlobal\Bundle\TagManagerBundle\Twig\TagManagerExtension:
+        tags:
+            - { name: twig.extension }
+
+    SpecterGlobal\Bundle\TagManagerBundle\Twig\TagManagerRuntime:
+        arguments:
+            - '@Twig\Environment'
+            - '@SpecterGlobal\Bundle\TagManagerBundle\Config\Config'
+        tags:
+            - { name: twig.runtime }
